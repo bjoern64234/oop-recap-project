@@ -41,6 +41,12 @@ public class Main {
         System.out.println(shopService.getAllOrders());
         System.out.println();
 
+        // Update order for product paper
+        System.out.println("Update order for product paper to 200");
+        shopService.update("paper", 200);
+        System.out.println(shopService.getAllOrders());
+        System.out.println();
+
         // Get total amount
         System.out.println(shopService.getTotal());
     }

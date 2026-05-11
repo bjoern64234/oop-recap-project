@@ -50,18 +50,25 @@ public class ShopService {
         this.orderListRepo.add(order);
     }
 
-    public void remove(String name) {
-        Product product = this.getProductByProductName(name);
-        if (product == null) {
-            return;
-        }
+    public void update(String name, int amount) {
+        Order order = this.getOrderByProductName(name);
 
-        Order order = this.getOrderByProductId(product.uuid());
-        if (order == null) {
-            return;
-        }
+        this.orderListRepo.update(order, amount);
+    }
+
+    public void remove(String name) {
+        Order order = this.getOrderByProductName(name);
 
         this.orderListRepo.remove(order);
+    }
+
+    public Order getOrderByProductName(String name) {
+        Product product = this.getProductByProductName(name);
+        if (product == null) {
+            return null;
+        }
+
+        return this.getOrderByProductId(product.uuid());
     }
 
     public double getPriceOfOrderByProductId(String productId) {
