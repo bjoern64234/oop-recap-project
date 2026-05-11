@@ -14,6 +14,11 @@ public class OrderListRepo implements OrderListInterface {
     }
 
     @Override
+    public void update(Order order, int amount) {
+        order.withAmount(amount);
+    }
+
+    @Override
     public void remove(Order order) {
         this.orders.remove(order);
     }

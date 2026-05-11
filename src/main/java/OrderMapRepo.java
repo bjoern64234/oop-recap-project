@@ -14,6 +14,11 @@ public class OrderMapRepo implements OrderListInterface{
     }
 
     @Override
+    public void update(Order order, int amount) {
+
+    }
+
+    @Override
     public void remove(Order order) {
         this.order.remove(order.uuid());
     }

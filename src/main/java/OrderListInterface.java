@@ -4,6 +4,8 @@ public interface OrderListInterface {
 
     public void add(Order order);
 
+    public void update(Order order, int amount);
+
     public void remove(Order order);
 
     public Order getById(String uuid);
