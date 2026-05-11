@@ -35,6 +35,10 @@ public class ShopService {
     }
 
     public void order(String productId, int amount) {
+        if (amount < 1)  {
+            System.out.println("You must at least order one product");
+        }
+
         Product product = this.productRepo.getById(productId);
 
         if (product == null) {

@@ -26,6 +26,8 @@ public class Main {
         shopService.order(pencil.uuid(), 6);
         Product paper = shopService.getProductByProductName("paper");
         shopService.order(paper.uuid(), 300);
+        Product filler = shopService.getProductByProductName("filler");
+        shopService.order(filler.uuid(), 3);
         System.out.println();
 
         // Get all orders
@@ -38,5 +40,8 @@ public class Main {
         shopService.remove("pencil");
         System.out.println(shopService.getAllOrders());
         System.out.println();
+
+        // Get total amount
+        System.out.println(shopService.getTotal());
     }
 }
