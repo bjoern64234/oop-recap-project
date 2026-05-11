@@ -22,6 +22,18 @@ public class ShopService {
         return this.productRepo.getProducts();
     }
 
+    public Product getProductByProductName(String name) {
+
+        for (Product product : this.sales()) {
+            if (name.equals(product.name())) {
+                return product;
+            }
+        }
+
+        System.out.println("There ist no product in stock with the name " + name);
+        return null;
+    }
+
     public void order(String productId, int amount) {
         Product product = this.productRepo.getById(productId);
 
