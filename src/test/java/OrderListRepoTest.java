@@ -94,4 +94,20 @@ class OrderListRepoTest {
         assertEquals(expected, actual);
 
     }
+
+    @Test
+    void update_isNotEqualWhenAmountIsWrongChanged() {
+        // Given
+        OrderListRepo orderListRepo = new OrderListRepo();
+        String productId = UUID.randomUUID().toString();
+        Order order = new Order(UUID.randomUUID().toString(), productId, 12);
+        orderListRepo.add(order);
+        // When
+        int expected = 22;
+        Order newOrder = orderListRepo.update(order, 10);
+        // Then
+        int actual = newOrder.amount();
+        assertNotEquals(expected, actual);
+
+    }
 }

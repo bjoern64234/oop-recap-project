@@ -94,4 +94,20 @@ class OrderMapRepoTest {
         int actual = newOrder.amount();
         assertEquals(expected, actual);
     }
+
+    @Test
+    void update_isNotEqualWhenAmountIsWrongChanged() {
+        // Given
+        OrderMapRepo orderMapRepo = new OrderMapRepo();
+        String productId = UUID.randomUUID().toString();
+        Order order = new Order(UUID.randomUUID().toString(), productId, 12);
+        orderMapRepo.add(order);
+        // When
+        int expected = 22;
+        Order newOrder = orderMapRepo.update(order, 10);
+        // Then
+        int actual = newOrder.amount();
+        assertNotEquals(expected, actual);
+
+    }
 }
