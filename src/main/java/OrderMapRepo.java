@@ -15,7 +15,7 @@ public class OrderMapRepo implements OrderListInterface{
 
     @Override
     public void update(Order order, int amount) {
-
+        order.withAmount(amount);
     }
 
     @Override
