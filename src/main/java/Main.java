@@ -35,7 +35,7 @@ public class Main {
 
         // Remove one order
         System.out.println("Remove order pencil");
-        shopService.remove(pencil.uuid());
+        shopService.remove("pencil");
         System.out.println(shopService.getAllOrders());
         System.out.println();
     }

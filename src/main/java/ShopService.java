@@ -46,8 +46,16 @@ public class ShopService {
         this.orderListRepo.add(order);
     }
 
-    public void remove(String productId) {
-        Order order = this.getOrderByProductId(productId);
+    public void remove(String name) {
+        Product product = this.getProductByProductName(name);
+        if (product == null) {
+            return;
+        }
+
+        Order order = this.getOrderByProductId(product.uuid());
+        if (order == null) {
+            return;
+        }
 
         this.orderListRepo.remove(order);
     }
@@ -83,6 +91,7 @@ public class ShopService {
             }
         }
 
+        System.out.println("There is not order for this product");
         return null;
     }
 
