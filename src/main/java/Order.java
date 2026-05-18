@@ -6,6 +6,10 @@ public record Order(String uuid, String productId, int amount, OrderStatus statu
             return this;
         }
 
-        return new Order(this.uuid, this.productId, newAmount, status);
+        return new Order(this.uuid, this.productId, newAmount, this.status);
+    }
+
+    public Order withStatus(OrderStatus status) {
+        return new Order(this.uuid, this.productId, this.amount, status);
     }
 }

@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Main {
 
 
@@ -43,11 +45,16 @@ public class Main {
 
         // Update order for product paper
         System.out.println("Update order for product paper to 200");
-        shopService.update("paper", 200);
+        shopService.update("paper", 200, OrderStatus.IN_DELIVERY);
         System.out.println(shopService.getAllOrders());
         System.out.println();
 
         // Get total amount
         System.out.println(shopService.getTotal());
+        System.out.println();
+
+        // Get orders by status
+        List<Order> ordersByStatus = shopService.getOrdersByStatus(OrderStatus.IN_DELIVERY);
+        System.out.println(ordersByStatus);
     }
 }

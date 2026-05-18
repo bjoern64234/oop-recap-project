@@ -4,7 +4,7 @@ public interface OrderListInterface {
 
     public void add(Order order);
 
-    public Order update(Order order, int amount);
+    public Order update(Order order, int amount, OrderStatus status);
 
     public void remove(Order order);
 

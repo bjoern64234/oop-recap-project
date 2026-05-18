@@ -89,7 +89,7 @@ class OrderMapRepoTest {
         orderMapRepo.add(order);
         // When
         int expected = 10;
-        Order newOrder = orderMapRepo.update(order, 10);
+        Order newOrder = orderMapRepo.update(order, 10, OrderStatus.PROCESSING);
         // Then
         int actual = newOrder.amount();
         assertEquals(expected, actual);
@@ -104,7 +104,7 @@ class OrderMapRepoTest {
         orderMapRepo.add(order);
         // When
         int expected = 22;
-        Order newOrder = orderMapRepo.update(order, 10);
+        Order newOrder = orderMapRepo.update(order, 10, OrderStatus.PROCESSING);
         // Then
         int actual = newOrder.amount();
         assertNotEquals(expected, actual);

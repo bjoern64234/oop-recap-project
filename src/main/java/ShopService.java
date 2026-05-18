@@ -46,14 +46,14 @@ public class ShopService {
             return;
         }
 
-        Order order = new Order(UUID.randomUUID().toString(), productId, amount, OrderStatus.PROCESSING);
+        Order order = new Order(UUID.randomUUID().toString(), product.name(), amount, OrderStatus.PROCESSING);
         this.orderListRepo.add(order);
     }
 
-    public void update(String name, int amount) {
+    public void update(String name, int amount, OrderStatus status) {
         Order order = this.getOrderByProductName(name);
 
-        this.orderListRepo.update(order, amount);
+        this.orderListRepo.update(order, amount, status);
     }
 
     public void remove(String name) {
@@ -68,12 +68,12 @@ public class ShopService {
             return null;
         }
 
-        return this.getOrderByProductId(product.uuid());
+        return this.getOrderByProductId(product.name());
     }
 
     public double getPriceOfOrderByProductId(String productId) {
         Order order = this.getOrderByProductId(productId);
-        Product product = this.productRepo.getById(productId);
+        Product product = this.getProductByProductName(productId);
 
         return order.amount() * product.price();
     }
@@ -91,6 +91,10 @@ public class ShopService {
 
     public List<Order> getAllOrders() {
         return new ArrayList<>(this.orderListRepo.getAll());
+    }
+
+    public List<Order> getOrdersByStatus(OrderStatus status) {
+        return this.orderListRepo.getAll().stream().filter(order -> order.status() == status).toList();
     }
 
     public Order getOrderByProductId(String productId) {

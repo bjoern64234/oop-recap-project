@@ -14,8 +14,8 @@ public class OrderListRepo implements OrderListInterface {
     }
 
     @Override
-    public Order update(Order order, int amount) {
-        Order newOrder = order.withAmount(amount);
+    public Order update(Order order, int amount, OrderStatus status) {
+        Order newOrder = order.withAmount(amount).withStatus(status);
         this.add(newOrder);
         this.remove(order);
 
