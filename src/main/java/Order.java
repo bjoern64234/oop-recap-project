@@ -1,4 +1,4 @@
-public record Order(String uuid, String productId, int amount) {
+public record Order(String uuid, String productId, int amount, OrderStatus status) {
 
     public Order withAmount(int newAmount) {
         if (newAmount < 1) {
@@ -6,6 +6,6 @@ public record Order(String uuid, String productId, int amount) {
             return this;
         }
 
-        return new Order(this.uuid, this.productId, newAmount);
+        return new Order(this.uuid, this.productId, newAmount, status);
     }
 }

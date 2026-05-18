@@ -10,7 +10,7 @@ class OrderListRepoTest {
         OrderListRepo orderListRepo = new OrderListRepo();
         String expected = UUID.randomUUID().toString();
         // When
-        Order newOrder = new Order(expected, UUID.randomUUID().toString(), 12);
+        Order newOrder = new Order(expected, UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING);
         orderListRepo.add(newOrder);
         // Then
         String actual = orderListRepo.getAll().getFirst().uuid();
@@ -21,10 +21,10 @@ class OrderListRepoTest {
     void add_isNotEqualsByDifferentOrder() {
         // Given
         OrderListRepo orderListRepo = new OrderListRepo();
-        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12);
+        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
         orderListRepo.add(newOrder);
         // When
-        Order expected = new Order(UUID.randomUUID().toString(), "productId", 12);
+        Order expected = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
         // Then
         Order actual = orderListRepo.getAll().getFirst();
         assertNotEquals(expected, actual);
@@ -34,7 +34,7 @@ class OrderListRepoTest {
     void remove_isTrueWhenAddedOrderWasRemoved() {
         // Given
         OrderListRepo orderListRepo = new OrderListRepo();
-        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12);
+        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
         orderListRepo.add(newOrder);
         // When
         orderListRepo.remove(newOrder);
@@ -46,10 +46,10 @@ class OrderListRepoTest {
     void remove_isFalseWhenAddedOrderWasNotRemoved() {
         // Given
         OrderListRepo orderListRepo = new OrderListRepo();
-        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12);
+        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
         orderListRepo.add(newOrder);
         // When
-        Order anotherOrder = new Order(UUID.randomUUID().toString(), "productId", 12);
+        Order anotherOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
         orderListRepo.remove(anotherOrder);
         // Then
         assertFalse(orderListRepo.getAll().isEmpty());
@@ -60,7 +60,7 @@ class OrderListRepoTest {
         // Given
         OrderListRepo orderListRepo = new OrderListRepo();
         // When
-        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12);
+        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING);
         orderListRepo.add(expected);
         // Then
         Order actual = orderListRepo.getById(expected.uuid());
@@ -72,7 +72,7 @@ class OrderListRepoTest {
         // Given
         OrderListRepo orderListRepo = new OrderListRepo();
         // When
-        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12);
+        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING);
         orderListRepo.add(expected);
         // Then
         Order actual = orderListRepo.getById(UUID.randomUUID().toString());
@@ -84,7 +84,7 @@ class OrderListRepoTest {
         // Given
         OrderListRepo orderListRepo = new OrderListRepo();
         String productId = UUID.randomUUID().toString();
-        Order order = new Order(UUID.randomUUID().toString(), productId, 12);
+        Order order = new Order(UUID.randomUUID().toString(), productId, 12, OrderStatus.PROCESSING);
         orderListRepo.add(order);
         // When
         int expected = 10;
@@ -100,7 +100,7 @@ class OrderListRepoTest {
         // Given
         OrderListRepo orderListRepo = new OrderListRepo();
         String productId = UUID.randomUUID().toString();
-        Order order = new Order(UUID.randomUUID().toString(), productId, 12);
+        Order order = new Order(UUID.randomUUID().toString(), productId, 12, OrderStatus.PROCESSING);
         orderListRepo.add(order);
         // When
         int expected = 22;
