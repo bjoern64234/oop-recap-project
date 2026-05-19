@@ -1,0 +1,36 @@
+### Get all people alive
+GET {{rickandmorty}}:{{port}}/api/character/?status=alive
+Accept: application/json
+
+> {%
+    var res = response.body
+    client.log("There are " + res.info.count + " persons alive");
+%}
+
+### Get all locations
+GET {{rickandmorty}}:{{port}}/api/location
+Accept: application/json
+
+> {%
+    var res = response.body;
+    client.log("There are " + res.info.count + " locations");
+    res.results.forEach(location => {
+        var residentCount = location.residents.reduce((acc, i) => acc + 1, 0);
+        client.log(location.name + " has " + residentCount + " residents");
+    });
+%}
+
+### Get all episodes
+GET {{rickandmorty}}:{{port}}/api/episode
+Accept: application/json
+
+> {%
+    var results = response.body.results;
+    results.forEach((episode, index) => {
+        client.log((index + 1) + ". " + episode.name);
+    });
+%}
+
+### Get id for name 'lisa'
+GET {{rickandmorty}}:{{port}}/api/character/?name=lisa
+

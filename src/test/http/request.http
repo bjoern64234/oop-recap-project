@@ -1,0 +1,19 @@
+### Get api endpoints
+GET {{rickandmorty}}:{{port}}/api
+Accept: application/json
+
+> {%
+    client.log(response);
+ %}
+
+### Get all character
+GET {{rickandmorty}}:{{port}}/api/character
+Accept: application/json
+
+> {%
+    var data = response.body;
+    client.log("Count: " + data.info.count);
+    client.test("Count should be 826", () => {
+        client.assert(data.info.count === 826, "Count was " + data.info.count);
+    });
+%}

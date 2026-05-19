@@ -1,0 +1,14 @@
+### Get all posts
+GET {{placeholder}}:{{port}}/posts
+
+### Get post with the id 42
+GET {{placeholder}}:{{port}}/posts/42
+
+### Post java student to api
+POST {{placeholder}}:{{port}}/posts
+Content-Type: application/json
+
+{
+  "title": "Java Student",
+  "body": "We are all students of the course"
+}
