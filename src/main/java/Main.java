@@ -24,12 +24,26 @@ public class Main {
         System.out.println();
 
         // Get product
-        Product pencil = shopService.getProductByProductName("pencil");
-        shopService.order(pencil.uuid(), 6);
-        Product paper = shopService.getProductByProductName("paper");
-        shopService.order(paper.uuid(), 300);
-        Product filler = shopService.getProductByProductName("filler");
-        shopService.order(filler.uuid(), 3);
+        try {
+            Product pencil = shopService.getProductByProductName("pencil").orElseThrow(() -> new ProductNotFoundException("pencil"));
+            shopService.order(pencil.uuid(), 6);
+        } catch (IllegalArgumentException | ProductNotFoundException e) {
+            System.err.println("Fehler: " + e.getMessage());
+        }
+
+        try {
+            Product paper = shopService.getProductByProductName("paper").orElseThrow(() -> new ProductNotFoundException("paper"));
+            shopService.order(paper.uuid(), 300);
+        } catch (IllegalArgumentException | ProductNotFoundException e) {
+            System.err.println("Fehler: " + e.getMessage());
+        }
+
+        try {
+            Product filler = shopService.getProductByProductName("filler").orElseThrow(() -> new ProductNotFoundException("filler"));
+            shopService.order(filler.uuid(), 3);
+        } catch (IllegalArgumentException | ProductNotFoundException e) {
+            System.err.println("Fehler: " + e.getMessage());
+        }
         System.out.println();
 
         // Get all orders

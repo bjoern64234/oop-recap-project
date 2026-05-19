@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class ShopService {
 
@@ -22,29 +19,24 @@ public class ShopService {
         return this.productRepo.getProducts();
     }
 
-    public Product getProductByProductName(String name) {
+    public Optional<Product> getProductByProductName(String name) {
 
         for (Product product : this.sales()) {
             if (name.equals(product.name())) {
-                return product;
+                return Optional.of(product);
             }
         }
 
-        System.out.println("There ist no product in stock with the name " + name);
-        return null;
+        return Optional.empty();
     }
 
-    public void order(String productId, int amount) {
-        if (amount < 1)  {
-            System.out.println("You must at least order one product");
+    public void order(String productId, int amount) throws ProductNotFoundException, IllegalArgumentException {
+        if (amount < 1) {
+            throw new IllegalArgumentException("You must at least order one product");
         }
 
-        Product product = this.productRepo.getById(productId);
-
-        if (product == null) {
-            System.out.println("A product with the productId " + productId + " is not existing");
-            return;
-        }
+        Product product = this.productRepo.getById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         Order order = new Order(UUID.randomUUID().toString(), product.name(), amount, OrderStatus.PROCESSING);
         this.orderListRepo.add(order);
@@ -63,17 +55,14 @@ public class ShopService {
     }
 
     public Order getOrderByProductName(String name) {
-        Product product = this.getProductByProductName(name);
-        if (product == null) {
-            return null;
-        }
+        Product product = this.getProductByProductName(name).orElseThrow(() -> new ProductNotFoundException(name));
 
         return this.getOrderByProductId(product.name());
     }
 
     public double getPriceOfOrderByProductId(String productId) {
         Order order = this.getOrderByProductId(productId);
-        Product product = this.getProductByProductName(productId);
+        Product product = this.getProductByProductName(productId).orElseThrow(() -> new ProductNotFoundException(productId));
 
         return order.amount() * product.price();
     }
@@ -97,11 +86,11 @@ public class ShopService {
         return this.orderListRepo.getAll().stream().filter(order -> order.status() == status).toList();
     }
 
-    public Order getOrderByProductId(String productId) {
+    public Order getOrderByProductId(String name) {
         List<Order> orders = this.orderListRepo.getAll();
 
         for (Order order : orders) {
-            if (productId.equals(order.productId())) {
+            if (name.equals(order.productId())) {
                 return order;
             }
         }

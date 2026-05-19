@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ProductRepo {
 
@@ -21,15 +22,10 @@ public class ProductRepo {
         System.out.println("Product with the uuid " + product.name() + " was removed.");
     }
 
-    public Product getById(String uuid) {
-
-        for (Product product : this.products) {
-            if (uuid.equals(product.uuid())) {
-                return product;
-            }
-        }
-
-        return null;
+    public Optional<Product> getById(String uuid) {
+        return this.products.stream()
+                .filter(product -> uuid.equals(product.uuid()))
+                .findFirst();
     }
 
     public List<Product> getProducts() {

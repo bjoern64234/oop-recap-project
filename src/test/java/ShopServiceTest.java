@@ -23,13 +23,13 @@ class ShopServiceTest {
         shopService.addItemToStock("paper", 0.65);
         shopService.addItemToStock("filler", 12.50);
 
-        p1 = shopService.getProductByProductName("pencil");
+        p1 = shopService.getProductByProductName("pencil").orElseThrow(() -> new ProductNotFoundException("pencil"));
         shopService.order(p1.uuid(), 6);
-        p2 = shopService.getProductByProductName("paper");
+        p2 = shopService.getProductByProductName("paper").orElseThrow(() -> new ProductNotFoundException("paper"));
         shopService.order(p2.uuid(), 300);
-        p3 = shopService.getProductByProductName("filler");
+        p3 = shopService.getProductByProductName("filler").orElseThrow(() -> new ProductNotFoundException("filler"));
         shopService.order(p3.uuid(), 3);
-        p4 = shopService.getProductByProductName("ruler");
+        p4 = shopService.getProductByProductName("ruler").orElseThrow(() -> new ProductNotFoundException("ruler"));
         shopService.order(p4.uuid(), 3);
     }
 
@@ -52,5 +52,28 @@ class ShopServiceTest {
         List<Order> actual = shopService.getOrdersByStatus(OrderStatus.COMPLETED);
         // Then
         assertThat(actual).isEmpty();
+    }
+
+    @Test
+    void order_throwsIllegalArgumentException() {
+        // When & Then
+        assertThatThrownBy(() -> shopService.order(p1.name(), 0))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void order_addOrderToList() {
+        // When
+        Order actual = shopService.getOrderByProductId(p1.name());
+        // Then
+        assertThat(this.orderListRepo.getAll()).contains(actual);
+
+    }
+
+    @Test
+    void order_throwsProductNotFoundException() {
+        // When & Then
+        assertThatThrownBy(() -> shopService.order("wrongId", 5))
+                .isInstanceOf(ProductNotFoundException.class);
     }
 }

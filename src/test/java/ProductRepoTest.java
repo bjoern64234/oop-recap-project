@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductRepoTest {
@@ -64,7 +66,7 @@ class ProductRepoTest {
         // When
         Product expected = productRepo.getProducts().getFirst();
         // Then
-        Product actual = productRepo.getById(expected.uuid());
+        Product actual = productRepo.getById(expected.uuid()).orElseThrow(() -> new ProductNotFoundException(expected.uuid()));
         assertEquals(expected, actual);
     }
 
@@ -77,7 +79,8 @@ class ProductRepoTest {
         // When
         String uuid = UUID.randomUUID().toString();
         // Then
-        Product actual = productRepo.getById(uuid);
-        assertNotEquals(expected, actual);
+        assertThatThrownBy(() -> productRepo.getById(uuid)
+                .orElseThrow(() -> new ProductNotFoundException(uuid)))
+                .isInstanceOf(ProductNotFoundException.class);
     }
 }
