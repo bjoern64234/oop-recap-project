@@ -1,17 +1,30 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderMapRepoTest {
 
+    private String uuid;
+    private Instant createdAt, updatedAt;
+    private OrderMapRepo orderMapRepo;
+
+    @BeforeEach
+    void setUp() {
+        // Given
+        uuid = UUID.randomUUID().toString();
+        orderMapRepo = new OrderMapRepo();
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+    }
+
     @Test
     void add_isEqualsByAddGivenOrder() {
-        // Given
-        OrderMapRepo orderMapRepo = new OrderMapRepo();
         // When
-        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING);
+        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.add(expected);
         // Then
         Order actual = orderMapRepo.getAll().getFirst();
@@ -21,11 +34,10 @@ class OrderMapRepoTest {
     @Test
     void add_isNotEqualsByDifferentOrder() {
         // Given
-        OrderMapRepo orderMapRepo = new OrderMapRepo();
-        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
+        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.add(newOrder);
         // When
-        Order expected = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
+        Order expected = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         // Then
         Order actual = orderMapRepo.getAll().getFirst();
         assertNotEquals(expected, actual);
@@ -34,8 +46,7 @@ class OrderMapRepoTest {
     @Test
     void remove_isTrueWhenAddedOrderWasRemoved() {
         // Given
-        OrderMapRepo orderMapRepo = new OrderMapRepo();
-        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
+        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.add(newOrder);
         // When
         orderMapRepo.remove(newOrder);
@@ -46,11 +57,10 @@ class OrderMapRepoTest {
     @Test
     void remove_isFalseWhenAddedOrderWasNotRemoved() {
         // Given
-        OrderMapRepo orderMapRepo = new OrderMapRepo();
-        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
+        Order newOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.add(newOrder);
         // When
-        Order anotherOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING);
+        Order anotherOrder = new Order(UUID.randomUUID().toString(), "productId", 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.remove(anotherOrder);
         // Then
         assertFalse(orderMapRepo.getAll().isEmpty());
@@ -58,10 +68,8 @@ class OrderMapRepoTest {
 
     @Test
     void getById_isEqualByAddedOrderKey() {
-        // Given
-        OrderMapRepo orderMapRepo = new OrderMapRepo();
         // When
-        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING);
+        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.add(expected);
         // Then
         Order actual = orderMapRepo.getById(expected.uuid());
@@ -73,7 +81,7 @@ class OrderMapRepoTest {
         // Given
         OrderMapRepo orderMapRepo = new OrderMapRepo();
         // When
-        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING);
+        Order expected = new Order(UUID.randomUUID().toString(), UUID.randomUUID().toString(), 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.add(expected);
         // Then
         Order actual = orderMapRepo.getById(UUID.randomUUID().toString());
@@ -83,9 +91,8 @@ class OrderMapRepoTest {
     @Test
     void update_isEqualWhenAmountIsChanged() {
         // Given
-        OrderMapRepo orderMapRepo = new OrderMapRepo();
-        String productId = UUID.randomUUID().toString();
-        Order order = new Order(UUID.randomUUID().toString(), productId, 12, OrderStatus.PROCESSING);
+        String productId = this.uuid;
+        Order order = new Order(UUID.randomUUID().toString(), productId, 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.add(order);
         // When
         int expected = 10;
@@ -98,9 +105,8 @@ class OrderMapRepoTest {
     @Test
     void update_isNotEqualWhenAmountIsWrongChanged() {
         // Given
-        OrderMapRepo orderMapRepo = new OrderMapRepo();
-        String productId = UUID.randomUUID().toString();
-        Order order = new Order(UUID.randomUUID().toString(), productId, 12, OrderStatus.PROCESSING);
+        String productId = this.uuid;
+        Order order = new Order(UUID.randomUUID().toString(), productId, 12, OrderStatus.PROCESSING, updatedAt, createdAt);
         orderMapRepo.add(order);
         // When
         int expected = 22;

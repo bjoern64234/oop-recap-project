@@ -1,3 +1,4 @@
+import java.time.Instant;
 import java.util.*;
 
 public class ShopService {
@@ -38,7 +39,7 @@ public class ShopService {
         Product product = this.productRepo.getById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
-        Order order = new Order(UUID.randomUUID().toString(), product.name(), amount, OrderStatus.PROCESSING);
+        Order order = new Order(UUID.randomUUID().toString(), product.name(), amount, OrderStatus.PROCESSING, Instant.now(), Instant.now());
         this.orderListRepo.add(order);
     }
 

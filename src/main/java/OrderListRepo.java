@@ -1,3 +1,4 @@
+import java.time.Instant;
 import java.util.*;
 
 public class OrderListRepo implements OrderListInterface {
@@ -15,7 +16,7 @@ public class OrderListRepo implements OrderListInterface {
 
     @Override
     public Order update(Order order, int amount, OrderStatus status) {
-        Order newOrder = order.withAmount(amount).withStatus(status);
+        Order newOrder = order.withAmount(amount).withStatus(status).withUpdatedAt(Instant.now());
         this.add(newOrder);
         this.remove(order);
 
