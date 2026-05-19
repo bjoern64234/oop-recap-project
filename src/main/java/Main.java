@@ -1,5 +1,6 @@
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -54,7 +55,7 @@ public class Main {
 
         // Remove one order
         System.out.println("Remove order pencil");
-        shopService.remove("pencil");
+        //shopService.remove("pencil");
         System.out.println(shopService.getAllOrders());
         System.out.println();
 
@@ -71,5 +72,10 @@ public class Main {
         // Get orders by status
         List<Order> ordersByStatus = shopService.getOrdersByStatus(OrderStatus.IN_DELIVERY);
         System.out.println(ordersByStatus);
+        System.out.println();
+
+        // Get oldest order by order status
+        Map<String, Order> oldOrders = shopService.getOldestOrderPerStatus();
+        System.out.println(oldOrders);
     }
 }

@@ -1,7 +1,10 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -11,6 +14,7 @@ class ShopServiceTest {
     private ProductRepo productRepo;
     private OrderListRepo orderListRepo;
     private Product p1, p2, p3, p4;
+    private Instant minusOneDay;
 
     @BeforeEach
     void setUp() {
@@ -31,6 +35,8 @@ class ShopServiceTest {
         shopService.order(p3.uuid(), 3);
         p4 = shopService.getProductByProductName("ruler").orElseThrow(() -> new ProductNotFoundException("ruler"));
         shopService.order(p4.uuid(), 3);
+
+        minusOneDay = Instant.now().minus(1, ChronoUnit.DAYS);
     }
 
     @Test
@@ -75,5 +81,17 @@ class ShopServiceTest {
         // When & Then
         assertThatThrownBy(() -> shopService.order("wrongId", 5))
                 .isInstanceOf(ProductNotFoundException.class);
+    }
+
+    @Test
+    void getOldestOrderPerStatus_matchesByChangeCreatedAt() {
+        // Given
+        Order expected = this.orderListRepo.getAll().getFirst().withCreatedAt(this.minusOneDay);
+        this.orderListRepo.add(expected);
+        // When
+        Map<String, Order> actual = this.shopService.getOldestOrderPerStatus();
+        // Then
+        assertThat(actual).containsValue(expected);
+        assertThat(actual.get(expected.uuid())).isEqualTo(expected);
     }
 }

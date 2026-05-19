@@ -1,5 +1,6 @@
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ShopService {
 
@@ -98,6 +99,16 @@ public class ShopService {
 
         System.out.println("There is not order for this product");
         return null;
+    }
+
+    public Map<String, Order> getOldestOrderPerStatus() {
+        return Arrays.stream(OrderStatus.values())
+                .parallel()
+                .flatMap(status -> this.getOrdersByStatus(status).stream()
+                        .min(Comparator.comparing(Order::createdAt))
+                        .map(order -> Map.entry(order.uuid(), order))
+                        .stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private String generateId() {
