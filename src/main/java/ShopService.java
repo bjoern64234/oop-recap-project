@@ -12,7 +12,7 @@ public class ShopService {
     }
 
     public void addItemToStock(String name, double price) {
-        Product product = new Product(UUID.randomUUID().toString(), name, price);
+        Product product = new Product(this.generateId(), name, price);
         this.productRepo.add(product);
     }
 
@@ -39,7 +39,7 @@ public class ShopService {
         Product product = this.productRepo.getById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
-        Order order = new Order(UUID.randomUUID().toString(), product.name(), amount, OrderStatus.PROCESSING, Instant.now(), Instant.now());
+        Order order = new Order(this.generateId(), product.name(), amount, OrderStatus.PROCESSING, Instant.now(), Instant.now());
         this.orderListRepo.add(order);
     }
 
@@ -98,6 +98,10 @@ public class ShopService {
 
         System.out.println("There is not order for this product");
         return null;
+    }
+
+    private String generateId() {
+        return UUID.randomUUID().toString();
     }
 
     @Override
